@@ -36,7 +36,7 @@ function srr.sellDrugs(k,v)
                     balance[Config.SellDrugs[k]["item"]].amount = parseInt(balance[Config.SellDrugs[k]["item"]].amount) - parseInt(amount)
                     vRP.setSData("chest:"..tostring(k),json.encode(balance))
                     DepositMoney(k,v,amount * price)
-                    vRP.giveInventoryItem(user_id,"maconha",amount)
+                    vRP.giveInventoryItem(user_id,Config.SellDrugs[k]["item"],amount)
                 else 
                     TriggerClientEvent("Notify",source,"negado","Dinheiro Insuficiente")
                 end
@@ -131,3 +131,4 @@ RegisterCommand("saldofac", function(source, args, rawCommand)
 
     end
 end)
+
