@@ -3,8 +3,8 @@ local Proxy = module("vrp","lib/Proxy")
 vRP = Proxy.getInterface("vRP")
 
 srr = {}
-Tunnel.bindInterface("srr_selldrugs", srr)
-vSERVER = Tunnel.getInterface("srr_selldrugs")
+Tunnel.bindInterface(GetCurrentResourceName(), srr)
+vSERVER = Tunnel.getInterface(GetCurrentResourceName())
 
 local fixedPeds = {}
 
@@ -27,7 +27,7 @@ CreateThread(function()
                 else
                     if distance <= 4 then
                         sleep = 4
-                        DrawText3D(v.x,v.y,v.z,"Pressione [~r~E~w~] Comprar Drogas")
+                        DrawText3D(v.x,v.y,v.z,"Pressione [~r~ E ~w~] Comprar Drogas")
                         if IsControlJustPressed(0,38) then
                             vSERVER.sellDrugs(k,v)
                         end
@@ -45,18 +45,19 @@ CreateThread(function()
 end)
 
 
-function DrawText3D(x,y,z, text)
-    local onScreen,_x,_y=World3dToScreen2d(x,y,z)
-    local px,py,pz=table.unpack(GetGameplayCamCoords())
-    
-    SetTextScale(0.28, 0.28)
+function DrawText3D(x,y,z,text)
+    SetDrawOrigin(x, y, z, 0);
     SetTextFont(4)
-    SetTextProportional(1)
-    SetTextColour(255, 255, 255, 215)
+    SetTextProportional(0)
+    SetTextScale(0.35,0.35)
+    SetTextColour(255,255,255,255)
+    SetTextDropshadow(0, 0, 0, 0, 255)
+    SetTextEdge(2, 0, 0, 0, 150)
+    SetTextDropShadow()
+    SetTextOutline()
     SetTextEntry("STRING")
     SetTextCentre(1)
     AddTextComponentString(text)
-    DrawText(_x,_y)
-    local factor = (string.len(text)) / 370
-    DrawRect(_x,_y+0.0125, 0.005+ factor, 0.03, 41, 11, 41, 68)
+    DrawText(0.0, 0.0)
+    ClearDrawOrigin()
 end

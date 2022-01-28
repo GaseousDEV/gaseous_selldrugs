@@ -4,8 +4,8 @@ vRP = Proxy.getInterface("vRP")
 vRPclient = Tunnel.getInterface("vRP")
 
 srr = {}
-Tunnel.bindInterface("srr_selldrugs", srr)
-vCLIENT = Tunnel.getInterface("srr_selldrugs")
+Tunnel.bindInterface(GetCurrentResourceName(), srr)
+vCLIENT = Tunnel.getInterface(GetCurrentResourceName())
 
 function srr.sellDrugs(k,v)
     local source = source
@@ -90,7 +90,7 @@ RegisterCommand("sacarfac", function(source, args, rawCommand)
         
         for k,v in pairs(Config.SellDrugs) do
 
-            if not vRP.hasPermission(user_id,v.permission) return then end
+            if not vRP.hasPermission(user_id,v.permission) then return end
 
             local balance = vRP.getSData('Bank:'..k)
             local distance = #(GetEntityCoords(GetPlayerPed(source)) - vector3(v.x2,v.y2,v.z2))
@@ -114,7 +114,7 @@ RegisterCommand("saldofac", function(source, args, rawCommand)
 
             message = message.. k..", "
 
-            if not vRP.hasPermission(user_id,v.permission) return then end
+            if not vRP.hasPermission(user_id,v.permission) then return end
 
             local balance = vRP.getSData('Bank:'..k) or 0 -
             TriggerClientEvent("Notify",source,"sucesso","Saldo Da Sua Fac é " ..balance)
