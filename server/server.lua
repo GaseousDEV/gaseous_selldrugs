@@ -116,7 +116,7 @@ RegisterCommand("saldofac", function(source, args, rawCommand)
 
             if not vRP.hasPermission(user_id,v.permission) then return end
 
-            local balance = vRP.getSData('Bank:'..k) or 0 -
+            local balance = vRP.getSData('Bank:'..k) or 0 
             TriggerClientEvent("Notify",source,"sucesso","Saldo Da Sua Fac é " ..balance)
         end
         
