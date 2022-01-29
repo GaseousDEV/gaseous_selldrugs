@@ -54,7 +54,7 @@ function CheckDrugs(amount,k,v)
     if camount >= amount then
         return true
     else 
-        TriggerClientEvent("Notify",source,"sucesso","Quantidade Invalida")
+        TriggerClientEvent("Notify",source,"negado","Quantidade Invalida")
         return false
     end
 end
@@ -71,7 +71,7 @@ function CheckBank(amount,k)
     if amount <= value then
         return true
     else 
-        TriggerClientEvent("Notify",source,"sucesso","Valor Invalido")
+        TriggerClientEvent("Notify",source,"negado","Valor Invalido")
         return false
     end
 end
@@ -90,15 +90,18 @@ RegisterCommand("sacarfac", function(source, args, rawCommand)
         
         for k,v in pairs(Config.SellDrugs) do
 
-            if not vRP.hasPermission(user_id,v.permission) then return end
-
-            local balance = vRP.getSData('Bank:'..k)
-            local distance = #(GetEntityCoords(GetPlayerPed(source)) - vector3(v.x2,v.y2,v.z2))
-            if CheckBank(amount,k) then
-                if distance <= 3 then
-                    amount = tonumber(amount)
-                    vRP.setSData('Bank:'..k,balance-amount)
-                    vRP.giveMoney(user_id,amount)
+            if vRP.hasPermission(user_id,v.permission) then 
+                local balance = vRP.getSData('Bank:'..k)
+                local distance = #(GetEntityCoords(GetPlayerPed(source)) - vector3(v.x2,v.y2,v.z2))
+                if CheckBank(amount,k) then
+                    if distance <= 3 then
+                        amount = tonumber(amount)
+                        vRP.setSData('Bank:'..k,balance-amount)
+                        vRP.giveMoney(user_id,amount)
+                        TriggerClientEvent("Notify",source,"sucesso","Saque Realizado com Sucesso")
+                    end
+                else 
+                    TriggerClientEvent("Notify",source,"negado","Valor Invalido")
                 end
             end
         end
@@ -114,16 +117,16 @@ RegisterCommand("saldofac", function(source, args, rawCommand)
 
             message = message.. k..", "
 
-            if not vRP.hasPermission(user_id,v.permission) then return end
-
-            local balance = vRP.getSData('Bank:'..k) or 0 
-            TriggerClientEvent("Notify",source,"sucesso","Saldo Da Sua Fac é " ..balance)
+            if vRP.hasPermission(user_id,v.permission) then
+                local balance = vRP.getSData('Bank:'..k) or 0 
+                TriggerClientEvent("Notify",source,"aviso","Saldo Da Sua Fac é " ..balance)
+            end
         end
         
         if vRP.hasPermission(user_id,Config.PermAdmin) then
             if Config.SellDrugs[args[1]] then
                 local balance = vRP.getSData('Bank:'..k) or 0 
-                TriggerClientEvent("Notify",source,"sucesso","Saldo Da Fac: " ..Config.SellDrugs[args[1]].. " é " ..balance)
+                TriggerClientEvent("Notify",source,"aviso","Saldo Da Fac: " ..Config.SellDrugs[args[1]].. " é " ..balance)
             else
                 TriggerClientEvent("Notify", source, "aviso",message)
             end
