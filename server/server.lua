@@ -125,7 +125,7 @@ RegisterCommand("saldofac", function(source, args, rawCommand)
         
         if vRP.hasPermission(user_id,Config.PermAdmin) then
             if Config.SellDrugs[args[1]] then
-                local balance = vRP.getSData('Bank:'..k) or 0 
+                local balance = vRP.getSData('Bank:'..args[1]) or 0 
                 TriggerClientEvent("Notify",source,"aviso","Saldo Da Fac: " ..Config.SellDrugs[args[1]].. " é " ..balance)
             else
                 TriggerClientEvent("Notify", source, "aviso",message)
